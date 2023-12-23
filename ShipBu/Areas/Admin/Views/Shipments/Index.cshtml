@@ -1,0 +1,57 @@
+﻿div>
+
+
+<partial name="_ToolBarPartial" />
+
+@section Scripts {
+    <partial name="_DataTablesPartial" />
+    <script>
+        $(() => {
+            const dt = createDatatable('/admin/shipments/tabledata', [
+
+                { title: 'Sevkiyat Numarası adı', data: 'shipmentNo' },
+                { title: 'Gönderici Ülke', data: 'senderCountry' },
+                { title: 'Varış Ülkesi', data: 'recipientCountry' },
+                { title: 'Alıcı', data: 'buyer' },
+                { title: 'Fiyat', data: 'price' },
+                { title: 'Takip Numarası', data: 'trackingId' },
+                { title: 'Takip Durumu', data: 'requestStatu' },
+                { title: 'Statü', data: 'trackingStatu' },
+
+               
+                { title: 'Kayıt T.', data: 'dateCreated' },
+                {
+                    title: '',
+                    data: 'id',
+                    render: (r, i, d, t) => {
+                        return `
+              <a class="btn btn-link" href="/admin/shipments/edit/${d.id}"><i class="fa fa-edit"></i> Düzenle</a>
+                 <a class="btn btn-link remove-btn" href="/admin/shipments/delete/${d.id}"><i class="fa fa-trash"></i> Sil</a>
+                            `;
+                    }
+                }
+            ], () => {
+
+                $('.remove-btn').on('click', (evt) => {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'UYARI!',
+                        html: 'Eminmisiniz?',
+                        showCancelButton: true,
+                        cancelButtonText: 'İptal',
+                        confirmButtonText: 'Sil'
+
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location = $(evt.currentTarget).attr('href');
+                        }
+                    })
+                    return false;
+                });
+
+            });
+
+        })
+    </script>
+}
+    </div>

@@ -1,0 +1,33 @@
+﻿@model Locationinfo
+
+
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="CommunicationName"></label>
+    <input class="form-control" asp-for="CommunicationName">
+    <span asp-validation-for="CommunicationName"></span>
+    </div>
+<div class="mb-3">
+    <label class="form-label" asp-for="Adress"></label>
+    <input class="form-control" asp-for="Adress">
+    <span asp-validation-for="Adress"></span>
+</div>
+<div class="mb-3">
+    <label class="form-label" asp-for="TelephoneNumber"></label>
+    <input class="form-control" asp-for="TelephoneNumber">
+    <span asp-validation-for="TelephoneNumber"></span>
+
+</div>
+<div class="mb-3">
+    <label class="form-label" asp-for="CountryId"></label>
+    <select class="form-select" asp-for="CountryId" asp-items="@ViewBag.Country">
+    </select>
+    <span asp-validation-for="CountryId"></span>
+</div>
+    
+    
+
+  
+   
+   

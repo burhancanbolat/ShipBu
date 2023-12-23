@@ -1,0 +1,58 @@
+﻿@using ShipBu.Areas.Admin.Models
+@using ShipBu.Data
+
+@model WareHouseModel
+
+<div class="card">
+    <div class="card-body">
+        <  <partial name="_FieldsPartial" model="@Model" />
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js" integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            var stateLabel = $("label[for='State']");
+            var stateDropdown = $("#State");
+
+            // İlk yükleme sırasında label ve dropdown'ı gizle
+            stateLabel.hide();
+            stateDropdown.hide();
+
+            // Country dropdown değiştiğinde çalışacak kod
+            $("#Country").change(function () {
+                var countryId = $(this).val();
+
+                // Ajax çağrısı ile eyaletleri getir
+                $.getJSON("/Home/GetStates/", { countryId: countryId }, function (data) {
+                    stateDropdown.empty();
+
+                    if (data.length > 0) {
+                        // Eyaletler varsa label ve dropdown'ı göster
+                        stateLabel.show();
+                        stateDropdown.append('<option value="">-- Select State --</option>');
+                        $.each(data, function (index, item) {
+                            stateDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                        stateDropdown.prop("disabled", false).show();
+                    } else {
+                        // Eyaletler gelmiyorsa label ve dropdown'ı gizle ve devre dışı bırak
+                        stateLabel.hide();
+                        stateDropdown.hide().empty().prop("disabled", true);
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

@@ -1,0 +1,60 @@
+﻿
+<div>
+
+
+    <partial name="_ToolBarPartial" />
+
+    @section Scripts {
+        <partial name="_DataTablesPartial" />
+        <script>
+            $(() => {
+                const dt = createDatatable('/admin/warehouses/tabledata', [
+
+                    { title: 'Amazon Depo', data: 'name' },
+                    { title: 'Ülke Adı', data: 'countryName' },
+                    { title: 'Eyalet Adı', data: 'stateName' },
+                    { title: 'Depo Gönderim Ücreti', data: 'price' },
+
+
+
+                   
+
+
+
+
+
+                    {
+                        title: '',
+                        data: 'id',
+                        render: (r, i, d, t) => {
+                            return `
+                                    <a class="btn btn-link" href="/admin/warehouses/edit/${d.id}"><i class="fa fa-edit"></i> Düzenle</a>
+                                    <a class="btn btn-link remove-btn" href="/admin/warehouses/delete/${d.id}"><i class="fa fa-trash"></i> Sil</a>
+                                `;
+                        }
+                    }
+                ], () => {
+
+                    $('.remove-btn').on('click', (evt) => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'UYARI!',
+                            html: 'Eminmisiniz?',
+                            showCancelButton: true,
+                            cancelButtonText: 'İptal',
+                            confirmButtonText: 'Sil'
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = $(evt.currentTarget).attr('href');
+                            }
+                        })
+                        return false;
+                    });
+
+                });
+
+            })
+        </script>
+    }
+</div>

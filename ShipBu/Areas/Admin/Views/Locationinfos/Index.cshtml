@@ -1,0 +1,59 @@
+﻿
+<div>
+
+
+    <partial name="_ToolBarPartial" />
+
+    @section Scripts {
+        <partial name="_DataTablesPartial" />
+        <script>
+            $(() => {
+                const dt = createDatatable('/admin/locationinfos/tabledata', [
+
+                    { title: 'Ad Soyad', data: 'communicationName' },
+                    { title: 'Adres', data: 'adress' },
+                    { title: 'Telefon Numarası', data: 'telephoneNumber' },
+                    { title: 'Gidecek Ülke Adı', data: 'countryName' },
+
+
+
+
+
+
+                    {
+                        title: '',
+                        data: 'id',
+                        render: (r, i, d, t) => {
+                            return `
+                <a class="btn btn-link" href="/admin/locationinfos/edit/${d.id}"><i class="fa fa-edit"></i> Düzenle</a>
+                             
+                 <a class="btn btn-link remove-btn" href="/admin/locationinfos/delete/${d.id}"><i class="fa fa-trash"></i> Sil</a>
+
+                                `;
+                        }
+                    }
+                ], () => {
+
+                    $('.remove-btn').on('click', (evt) => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'UYARI!',
+                            html: 'Eminmisiniz?',
+                            showCancelButton: true,
+                            cancelButtonText: 'İptal',
+                            confirmButtonText: 'Sil'
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = $(evt.currentTarget).attr('href');
+                            }
+                        })
+                        return false;
+                    });
+
+                });
+
+            })
+        </script>
+    }
+</div>

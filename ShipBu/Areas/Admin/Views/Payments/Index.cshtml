@@ -1,0 +1,58 @@
+﻿
+<div>
+
+
+  
+
+    @section Scripts {
+        <partial name="_DataTablesPartial" />
+        <script>
+            $(() => {
+                const dt = createDatatable('/admin/payments/tabledata', [
+
+                    { title: 'Kullanıcı', data: 'userName' },
+
+                    { title: 'Gönderen Ülke', data: 'sendingCountry' },
+                    { title: 'Alıcı Ülke', data: 'country' },
+                    { title: 'Eyalet Adı', data: 'state' },
+                    { title: 'Amazon Depo Adı', data: 'wareHouse' },
+                    { title: 'en*boy*yükseklik', data: 'totalDesi' },
+                    { title: 'Adet * Ağırlık', data: 'totalWeight' },
+
+                    {
+                        title: '',
+                        data: 'id',
+                        render: (r, i, d, t) => {
+                            return `
+                                                
+                                                            <a class="btn btn-link" href="/admin/payments/featureDetail/${d.id}"><i class="fa fa-edit"></i> detaylar</a>
+
+                                                <a class="btn btn-link remove-btn" href="/admin/payments/delete/${d.id}"><i class="fa fa-trash"></i> Sil</a>
+                                            `;
+                        }
+                    }
+                ], () => {
+
+                    $('.remove-btn').on('click', (evt) => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'UYARI!',
+                            html: 'Eminmisiniz?',
+                            showCancelButton: true,
+                            cancelButtonText: 'İptal',
+                            confirmButtonText: 'Sil'
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = $(evt.currentTarget).attr('href');
+                            }
+                        })
+                        return false;
+                    });
+
+                });
+
+            })
+        </script>
+    }
+</div>

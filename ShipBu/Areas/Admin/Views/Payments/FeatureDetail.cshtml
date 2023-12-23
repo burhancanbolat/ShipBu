@@ -1,0 +1,204 @@
+﻿@using ShipBu.Areas.Admin.Models
+@model FeatureDetailViewModel
+
+
+
+
+<section class="invoice printableArea">
+    <div class="row">
+        <div class="col-12">
+            <div class="bb-1 clearFix">
+                <div class="text-end pb-15">
+                    <button class="btn btn-success" type="button"> <span><i class="fa fa-print"></i> Save</span> </button>
+                    <button id="print2" class="btn btn-warning" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="page-header">
+                <h2 class="d-inline"><span class="fs-30">SİPARİŞ DETAYLARI</span></h2>
+                <div class="pull-right text-end">
+                    <h3>@DateTime.UtcNow.ToString("dd MMMM yyyy")</h3>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="row invoice-info">
+        <div class="col-md-6 invoice-col">
+            <strong>From</strong>
+            <address>
+                @foreach (var user in Model.Users)
+                {
+
+                    <strong class="text-blue fs-24">@user.Name</strong>
+
+
+                    <p>@user.Adress</p>
+                    <strong>Telefon: @user.PhoneNumber E-Posta: @user.Email</strong>
+
+
+                }
+            </address>
+        </div>
+        <!-- /.col -->
+        <!-- /.col -->
+        <div class="col-sm-12 invoice-col mb-15">
+            <div class="invoice-details row no-margin">
+
+                <div class="col-md-6 col-lg-3"><b>Desi Fiyatlandırması : @Model.Result</b> </div>
+
+            </div>
+        </div>
+        <!-- /.col -->
+        @{
+            int counterP = 1;
+            int counterc = 1;
+
+
+        }
+        <div class="row">
+            <div class="col-12 table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                    <thead class="bg-secondary">
+                        <tr>
+                            <th><strong>#</strong></th>
+                            <th>Özellik Adı</th>
+                            <th>Özellik Ücreri</th>
+
+                        </tr>
+                        </thead>
+                        @if (Model.Features != null && Model.FeaturePrices != null && Model.Features.Any() && Model.FeaturePrices.Any())
+                        {
+                            @foreach (var (feature, featurePrice) in Model.Features.Zip(Model.FeaturePrices, (f, p) => (f, p)))
+                            {
+                            <tr>
+                                <td>@counterP</td>
+                                <td>@feature</td>
+                                <td>@featurePrice</td>
+                            </tr>
+                                counterP++;
+                            }
+                        }
+                        else
+                        {
+                        <tr>
+                            <td>@counterP</td>
+                            <td>Özellik Seçilmedi</td>
+                            <td>0</td>
+                        </tr>
+                        }
+                    <thead class="bg-secondary">
+                         <tr>
+                            
+                            <th><strong>#</strong></th>
+                            <th>Alıcı Ülke</th>
+                            <th></th>
+
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td>@counterc</td> <!-- Display the counter value -->
+                            <td>@Model.CountryName</td>
+                            <td> </td>
+                        </tr>
+                    <thead class="bg-secondary">
+                        <tr>
+
+                            <th><strong>#</strong></th>
+                            <th>Alıcı Eyalet</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>@counterc</td> <!-- Display the counter value -->
+                        <td>@Model.StateName</td>
+                        <td>  </td>
+                    </tr>
+                    <thead class="bg-secondary">
+                        <tr>
+
+                            <th><strong>#</strong></th>
+                            <th>Amazon Deposu</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>@counterc</td> <!-- Display the counter value -->
+                        <td>@Model.wareHouseName</td>
+                        <td>  </td>
+                    </tr>
+                    <thead class="bg-secondary">
+                        <tr>
+
+                            <th><strong>Toplam Fiyat</strong></th>
+                            <th></th>
+                            <th>Toplam Ücret: @Model.TotalPrice</th>
+
+                        </tr>
+                    </thead>
+                   
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- /.col -->
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-end">
+                <p class="lead"><b>Sipariş Tarihi </b><span class="text-danger"> 14/08/2018 </span></p>
+
+              
+                <div class="total-payment">
+                    <h3><b>Toplam Ödeme :</b> $@Model.TotalPrice</h3>
+                </div>
+
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row no-print">
+            <div class="col-12">
+                <button type="button" class="btn btn-success pull-right">
+                    <i class="fa fa-credit-card"></i> Sipariş Onayla
+                </button>
+            </div>
+        </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

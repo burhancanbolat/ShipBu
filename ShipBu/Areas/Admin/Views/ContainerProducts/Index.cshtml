@@ -1,0 +1,55 @@
+﻿<div>
+
+
+    <partial name="_ToolBarPartial" />
+
+    @section Scripts {
+        <partial name="_DataTablesPartial" />
+        <script>
+            $(() => {
+                const dt = createDatatable('/admin/containerproducts/tabledata', [
+
+                   
+                    { title: 'Adet', data: 'quantity' },
+                    { title: 'Ton', data: 'ton' },
+                    { title: 'Toplam Tonaj', data: 'totalTon' },
+                  
+                    
+
+
+
+                    {
+                        title: '',
+                        data: 'id',
+                        render: (r, i, d, t) => {
+                            return `
+                <a class="btn btn-link" href="/admin/containerproducts/edit/${d.id}"><i class="fa fa-edit"></i> Düzenle</a>
+                <a class="btn btn-link remove-btn" href="/admin/containerproducts/delete/${d.id}"><i class="fa fa-trash"></i> Sil</a>
+                                            `;
+                        }
+                    }
+                ], () => {
+
+                    $('.remove-btn').on('click', (evt) => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'UYARI!',
+                            html: 'Eminmisiniz?',
+                            showCancelButton: true,
+                            cancelButtonText: 'İptal',
+                            confirmButtonText: 'Sil'
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = $(evt.currentTarget).attr('href');
+                            }
+                        })
+                        return false;
+                    });
+
+                });
+
+            })
+        </script>
+    }
+</div>

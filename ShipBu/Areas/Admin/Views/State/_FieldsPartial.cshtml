@@ -1,0 +1,23 @@
+﻿@model State
+
+
+<div class="mb-3">
+    <label class="form-label" asp-for="CountryId"></label>
+    <select class="form-select" asp-for="CountryId" asp-items="@ViewBag.States">
+    </select>
+    <span asp-validation-for="CountryId"></span>
+</div>
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name"></label>
+        <input class="form-control" asp-for="Name">
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    
+    
+
+  
+   
+   

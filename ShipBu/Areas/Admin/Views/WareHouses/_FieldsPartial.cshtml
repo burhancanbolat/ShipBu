@@ -1,0 +1,80 @@
+﻿@using ShipBu.Areas.Admin.Models
+@model WareHouseModel
+
+<form asp-controller="WareHouses" asp-action="Create" method="post">
+    <div class="mb-3">
+        <label for="Country" class="form-label">NEREYE:</label>
+        <select class="form-select" id="Country" name="SelectedIdsCountry">
+            <option value="">Bir değer seçiniz</option>
+            @foreach (var country in Model.Country)
+            {
+                <option name="SelectedIdsCountry" value="@country.Id">@country.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="State" class="form-label">Eyaletler:</label>
+        <select class="form-select" id="State" name="SelectedIdsState" disabled>
+            <option name="SelectedIdsState" value="">-- Select State --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name"></label>
+        <input class="form-control" id="WarehouseName" asp-for="Name">
+        <span asp-validation-for="Name"></span>
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Price"></label>
+        <input class="form-control" id="WarehousePrice" asp-for="Price">
+        <span asp-validation-for="Price"></span>
+    </div>
+
+    <hr />
+    <button type="submit" class="btn btn-primary">
+        Kaydet
+    </button>
+    <a id="saveButton" class="btn btn-link" asp-action="Index">İptal</a>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+      
+        var stateLabel = $("label[for='State']");
+        var stateDropdown = $("#State");
+
+        // İlk yükleme sırasında label ve dropdown'ı gizle
+        stateLabel.hide();
+        stateDropdown.hide();
+
+        // Country dropdown değiştiğinde çalışacak kod
+        $("#Country").change(function () {
+            var countryId = $(this).val();
+
+            // Ajax çağrısı ile eyaletleri getir
+            $.getJSON("/Home/GetStates/", { countryId: countryId }, function (data) {
+                stateDropdown.empty();
+
+                if (data.length > 0) {
+                    // Eyaletler varsa label ve dropdown'ı göster
+                    stateLabel.show();
+                    stateDropdown.append('<option value="">-- Select State --</option>');
+                    $.each(data, function (index, item) {
+                        stateDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    });
+                    stateDropdown.prop("disabled", false).show();
+                } else {
+                    // Eyaletler gelmiyorsa label ve dropdown'ı gizle ve devre dışı bırak
+                    stateLabel.hide();
+                    stateDropdown.hide().empty().prop("disabled", true);
+                }
+            });
+        });
+
+    });
+</script>

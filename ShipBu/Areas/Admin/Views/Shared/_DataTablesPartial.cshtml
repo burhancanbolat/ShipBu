@@ -1,0 +1,26 @@
+﻿
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>,
+<script>
+
+    function createDatatable(u, c, e) {
+        return $('.datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            scrollX: true,
+            autoWidth: false,
+
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json',
+            },
+            ajax: {
+                url: u,
+                method: 'GET'
+            },
+            columns: c,
+            
+        }).on('draw', e);
+    }
+
+</script>

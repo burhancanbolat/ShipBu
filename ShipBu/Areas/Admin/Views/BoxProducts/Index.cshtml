@@ -1,0 +1,56 @@
+﻿<div>
+
+
+    <partial name="_ToolBarPartial" />
+
+    @section Scripts {
+        <partial name="_DataTablesPartial" />
+        <script>
+            $(() => {
+                const dt = createDatatable('/admin/boxproducts/tabledata', [
+
+                    { title: 'Adet', data: 'quantity' },
+                    { title: 'Ağırlık', data: 'weight' },
+                    { title: 'Toplam Ağırlık', data: 'totalWeight' },
+                    { title: 'En', data: 'width' },
+                    { title: 'ÜrünAdedi', data: 'productCount' },
+                    { title: 'Boy', data: 'length' },
+                    { title: 'Yükseklik', data: 'height' },
+
+                    
+                  
+                    {
+                        title: '',
+                        data: 'id',
+                        render: (r, i, d, t) => {
+                            return `
+                   <a class="btn btn-link" href="/admin/boxproducts/edit/${d.id}"><i class="fa fa-edit"></i> Düzenle</a>
+                    <a class="btn btn-link remove-btn" href="/admin/boxproducts/delete/${d.id}"><i class="fa fa-trash"></i> Sil</a>
+                                `;
+                        }
+                    }
+                ], () => {
+
+                    $('.remove-btn').on('click', (evt) => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'UYARI!',
+                            html: 'Eminmisiniz?',
+                            showCancelButton: true,
+                            cancelButtonText: 'İptal',
+                            confirmButtonText: 'Sil'
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = $(evt.currentTarget).attr('href');
+                            }
+                        })
+                        return false;
+                    });
+
+                });
+
+            })
+        </script>
+    }
+</div>

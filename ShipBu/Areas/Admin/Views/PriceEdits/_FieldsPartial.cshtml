@@ -1,0 +1,188 @@
+﻿@using ShipBu.Areas.Admin.Models
+
+@model PriceEditModel
+
+<form asp-controller="PriceEdits" asp-action="Create" method="post">
+
+
+    <div class="mb-3">
+        <label for="Country" class="form-label">NEREYE:</label>
+        <select class="form-select" id="Country" name="SelectedIdsCountry">
+            <option value="">Bir değer seçiniz</option>
+            @foreach (var country in Model.Country)
+            {
+                <option name="SelectedIdsCountry" value="@country.Id">@country.Name</option>
+            }
+        </select>
+    </div>
+
+
+    <!-- Dropdown for Selected State -->
+    <div class="mb-3">
+        <label for="State" class="form-label">Eyaletler:</label>
+        <select class="form-select" id="State" name="SelectedIdsState" disabled>
+
+            <option name="SelectedIdsState" value="">-- Select State --</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="WareHouse" class="form-label">amazon depo:</label>
+        <select class="form-select" id="WareHouse" name="SelectedIdsWareHouse" disabled>
+            <option name="SelectedIdsWareHouse" value="">-- Select State --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="PrimaryKg"></label>
+        <input class="form-control" asp-for="PrimaryKg">
+        <span asp-validation-for="PrimaryKg"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="SecondaryKg"></label>
+        <input class="form-control" asp-for="SecondaryKg">
+        <span asp-validation-for="SecondaryKg"></span>
+    </div>
+    <div class="mb-3">
+        <label for="SendingGenre" class="form-label">Gönderim Türü:</label>
+        <select class="form-select" id="SendingGenre" name="SelectedIdsGenre">
+            <option value="">Bir değer seçiniz</option>
+            @foreach (var genre in Model.sendingGenres)
+            {
+                <option name="SelectedIdsGenre" value="@genre.Id">@genre.Name</option>
+            }
+        </select>
+    </div>
+
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Price"></label>
+        <input class="form-control" asp-for="Price">
+        <span asp-validation-for="Price"></span>
+    </div>
+
+
+    <hr />
+    <button type="submit" class="btn btn-primary">
+        Kaydet
+    </button>
+    <a id="saveButton" class="btn btn-link" asp-action="Index">İptal</a>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var boxProductId = sessionStorage.getItem('boxProductId');
+        var paletteProductId = sessionStorage.getItem('paletteProductId');
+        var containerProductId = sessionStorage.getItem('containerProductId');
+        var stateLabel = $("label[for='State']");
+        var stateDropdown = $("#State");
+
+        // İlk yükleme sırasında label ve dropdown'ı gizle
+        stateLabel.hide();
+        stateDropdown.hide();
+
+        // Country dropdown değiştiğinde çalışacak kod
+        $("#Country").change(function () {
+            var countryId = $(this).val();
+
+            // Ajax çağrısı ile eyaletleri getir
+            $.getJSON("/Home/GetStates/", { countryId: countryId }, function (data) {
+                stateDropdown.empty();
+
+                if (data.length > 0) {
+                    // Eyaletler varsa label ve dropdown'ı göster
+                    stateLabel.show();
+                    stateDropdown.append('<option value="">-- Select State --</option>');
+                    $.each(data, function (index, item) {
+                        stateDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    });
+                    stateDropdown.prop("disabled", false).show();
+                } else {
+                    // Eyaletler gelmiyorsa label ve dropdown'ı gizle ve devre dışı bırak
+                    stateLabel.hide();
+                    stateDropdown.hide().empty().prop("disabled", true);
+                }
+            });
+        });
+
+    });
+
+
+    $(document).ready(function () {
+        var boxProductId = sessionStorage.getItem('boxProductId');
+        var paletteProductId = sessionStorage.getItem('paletteProductId');
+        var containerProductId = sessionStorage.getItem('containerProductId');
+        var wareLabel = $("label[for='WareHouse']");
+        var wareDropdown = $("#WareHouse");
+
+        // İlk yükleme sırasında label ve dropdown'ı gizle
+        wareLabel.hide();
+        wareDropdown.hide();
+
+        // Country dropdown değiştiğinde çalışacak kod
+        $("#Country").change(function () {
+            var countryId = $(this).val();
+
+            // Ajax çağrısı ile eyaletleri getir
+            $.getJSON("/Home/GetWare/", { countryId: countryId }, function (data) {
+                wareDropdown.empty();
+
+                if (data.length > 0) {
+                    // Eyaletler varsa label ve dropdown'ı göster
+                    wareLabel.show();
+                    wareDropdown.append('<option value="">-- Select State --</option>');
+                    $.each(data, function (index, item) {
+                        wareDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    });
+                    wareDropdown.prop("disabled", false).show();
+                } else {
+                    // Eyaletler gelmiyorsa label ve dropdown'ı gizle ve devre dışı bırak
+                    wareLabel.hide();
+                    wareDropdown.hide().empty().prop("disabled", true);
+                }
+            });
+        });
+
+    });
+    $(document).ready(function () {
+        var boxProductId = sessionStorage.getItem('boxProductId');
+        var paletteProductId = sessionStorage.getItem('paletteProductId');
+        var containerProductId = sessionStorage.getItem('containerProductId');
+        var waresLabel = $("label[for='WareHouse']");
+        var waresDropdown = $("#WareHouse");
+
+        // İlk yükleme sırasında label ve dropdown'ı gizle
+        waresLabel.hide();
+        waresDropdown.hide();
+
+        // Country dropdown değiştiğinde çalışacak kod
+        $("#State").change(function () {
+            var stateId = $(this).val();
+
+
+            // Ajax çağrısı ile eyaletleri getir
+            $.getJSON("/Home/GetWarehouses/", { stateId: stateId }, function (data) {
+                waresDropdown.empty();
+
+                if (data.length > 0) {
+                    // Eyaletler varsa label ve dropdown'ı göster
+                    waresLabel.show();
+                    waresDropdown.append('<option value="">-- Select State --</option>');
+                    $.each(data, function (index, item) {
+                        waresDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                    });
+                    waresDropdown.prop("disabled", false).show();
+                } else {
+                    // Eyaletler gelmiyorsa label ve dropdown'ı gizle ve devre dışı bırak
+                    waresLabel.hide();
+                    waresDropdown.hide().empty().prop("disabled", true);
+                }
+            });
+        });
+
+    });
+
+
+
+</script>
